@@ -7,30 +7,55 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+//API 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\QueryParameter;
+use ApiPlatform\Metadata\ApiFilter;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ['student:read']],
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
+)]
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['student:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['student:read'])]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     #[ORM\Column(length: 255)]
     private ?string $firstName = null;
 
+    #[Groups(['student:read'])]
     #[ORM\Column(length: 255)]
+    #[ApiFilter(SearchFilter::class, strategy: 'partial')]
     private ?string $lastName = null;
 
+    #[Groups(['student:read'])]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $birthDay = null;
 
+    #[Groups(['student:read'])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     #[ORM\Column]
     private ?int $promo = null;
 
+    #[Groups(['student:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    // #[Groups(['student:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $company = null;
 
@@ -43,6 +68,8 @@ class Student
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[Groups(['student:read'])]
+    #[ApiFilter(SearchFilter::class, strategy: 'exact')]
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Course $course = null;
@@ -85,6 +112,11 @@ class Student
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->firstName." ".$this->lastName;
     }
 
     public function getBirthDay(): ?\DateTimeImmutable

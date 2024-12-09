@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <h1 class="text-center text-uppercase fw-bolder m-5">Bienvenue sur le back office de l'annuaire EMISA</h1>
+            <div class="mb-3 text-center fst-italic">
+                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+            </div>
+            <div>
+                <img src=" {{ asset('img/bandeau-home.png') }}" class="img-fluid" alt="EMISA annuaire admin"/>
+            </div>
+            {# {% include 'partials/menu.html.twig' %} #}
+        {% else %}
+        <h1 class="h3 mb-3 font-weight-normal">Connexion au compte administrateur</h1>
+        <label for="username">Email</label> <br/>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus> <br/>
+        <label for="password">Mot de passe</label> <br/>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required> <br/><br/>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"/>
+
+            <div class="checkbox mb-3">
+                <input type="checkbox" name="_remember_me" id="_remember_me">
+                <label for="_remember_me">Se souvenir de moi</label>
+            </div>
+
+        <button class="btn btn-primary btn-lg" type="submit"> S'enregistrer </button>
+        {% endif %}
+    </form>
+{% endblock %}

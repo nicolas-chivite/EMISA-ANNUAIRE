@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use App\Entity\Course;
+use App\Entity\Log;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,9 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/student')]
+#[Route('/admin/student')]
 final class StudentController extends AbstractController
 {
+
     #[Route(name: 'app_student_index', methods: ['GET'])]
     public function index(StudentRepository $studentRepository): Response
     {
@@ -42,6 +44,13 @@ final class StudentController extends AbstractController
                     );
                     $student->setPhoto($newFilename);
                 }
+            $log = new Log($entityManager);
+            $log->log(
+                $this->getUser(),
+                'new',
+                'Created student ID '.$student->getId()
+            );
+
             $entityManager->persist($student);
             $entityManager->flush();
 
@@ -55,8 +64,14 @@ final class StudentController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_student_show', methods: ['GET'])]
-    public function show(Student $student): Response
+    public function show(Student $student, EntityManagerInterface $entityManager): Response
     {
+        $log = new Log($entityManager);
+        $log->log(
+            $this->getUser(),
+            'update',
+            'Updated student ID '.$student->getId()
+        );
         return $this->render('student/show.html.twig', [
             'student' => $student,
         ]);
@@ -79,8 +94,16 @@ final class StudentController extends AbstractController
                     );
                     $student->setPhoto($newFilename);
                 }
-            $entityManager->flush();
 
+            $log = new Log($entityManager);
+            $log->log(
+                $this->getUser(),
+                'update',
+                'Updated student ID '.$student->getId()
+            );
+
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'étudiant a été modifié avec succès !');
             return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -95,6 +118,14 @@ final class StudentController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$student->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($student);
+
+            $log = new Log($entityManager);
+            $log->log(
+                $this->getUser(),
+                'delete',
+                'Deleted student ID '.$student->getId()
+            );
+
             $entityManager->flush();
         }
 

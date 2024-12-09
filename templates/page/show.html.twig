@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page{% endblock %}
+
+{% block body %}
+    <h1>Page</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ page.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ page.title }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ page.content }}</td>
+            </tr>
+            <tr>
+                <th>En ligne</th>
+                <td>{{ page.isActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Meta-Titre</th>
+                <td>{{ page.metaTitle }}</td>
+            </tr>
+            <tr>
+                <th>Meta-Description</th>
+                <td>{{ page.metaDescription }}</td>
+            </tr>
+            <tr>
+                <th>Date de création</th>
+                <td>{{ page.createdAt ? page.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date de modification</th>
+                <td>{{ page.updatedAt ? page.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_page_index') }}">Retour à la liste</a>
+
+    <a class="btn btn-warning" href="{{ path('app_page_edit', {'id': page.id}) }}">Modifier</a>
+
+    {{ include('page/_delete_form.html.twig') }}
+{% endblock %}

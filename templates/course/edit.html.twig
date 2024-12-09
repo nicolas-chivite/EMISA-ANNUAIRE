@@ -3,11 +3,7 @@
 {% block title %}Modifier une formation{% endblock %}
 
 {% block body %}
-    <h1>Modifier une formation</h1>
+    <h1>Modifier la formation : {{ course.title }}</h1>
 
-    {{ include('course/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_course_index') }}"><button>Retour à la liste</button></a>
-
-    {{ include('course/_delete_form.html.twig') }}
+    {{ include('course/_form.html.twig', {'button_label': 'Modifier'}) }}
 {% endblock %}

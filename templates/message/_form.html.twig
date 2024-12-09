@@ -1,4 +1,28 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="form-group mb-3">
+        {{ form_label(form.object, 'Objet') }}
+        {{ form_widget(form.object, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.object) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.expeditor, 'Expediteur') }}
+        {{ form_widget(form.expeditor, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.expeditor) }}
+    </div>
+
+    <div class="form-group mb-3">
+        {{ form_label(form.content, 'Votre message') }}
+        {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.content) }}
+    </div>
+{# 
+    <div class="form-group mb-3">
+        {{ form_label(form.student, 'Etudiant destinataire') }}
+        {{ form_widget(form.student, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.student) }}
+    </div> #}
+
+    <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    <a href="{{ path('app_course_index') }}" class="btn btn-secondary">Annuler</a>
 {{ form_end(form) }}

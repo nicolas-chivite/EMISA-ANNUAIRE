@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Mot de passe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                {# <td>{{ user.id }}</td> #}
+                <td>{{ user.email }}</td>
+                <td>
+                    {% for role in user.roles %}
+                        <span class="badge bg-info text-dark">{{ role }}</span>
+                    {% endfor %}</td>
+                <td>
+                    <code>{{ user.password|slice(0, 20) ~ (user.password|length > 20 ? '...' : '') }}</code>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_user_show', {'id': user.id}) }}">Voir</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('app_user_edit', {'id': user.id}) }}">Modifier</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('app_user_delete', {'id': user.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Pas d'utilisateurs trouvés</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_user_new') }}">Créer un nouvel utilisateur</a>
+{% endblock %}

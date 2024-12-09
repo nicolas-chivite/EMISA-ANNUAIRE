@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Menu index{% endblock %}
+
+{% block body %}
+    <h1>Liste des menus </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Url</th>
+                <th>En ligne</th>
+                <th>Position</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for menu in menus %}
+            <tr>
+                <td>{{ menu.id }}</td>
+                <td>{{ menu.title }}</td>
+                <td>{{ menu.url }}</td>
+                <td>{{ menu.isActive ? 'Oui' : 'Non' }}</td>
+                <td>{{ menu.position }}</td>
+                <td>{{ menu.createdAt ? menu.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ menu.updatedAt ? menu.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_menu_show', {'id': menu.id}) }}">Voir</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('app_menu_edit', {'id': menu.id}) }}">Modifier</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('app_menu_delete', {'id': menu.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Pas de données enregistrer</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_menu_new') }}">Créer un nouveau menu</a>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des contacts{% endblock %}
+
+{% block body %}
+    <h1>Liste des contacts</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Contenu</th>
+                <th>Confidentialité Acceptée</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.id }}</td>
+                <td>{{ contact.firstName }}</td>
+                <td>{{ contact.lastName }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.content }}</td>
+                <td>{{ contact.privacyAccepted ? 'Yes' : 'No' }}</td>
+                <td>{{ contact.createdAt ? contact.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ contact.updatedAt ? contact.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_contact_show', {'id': contact.id}) }}">Voir</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('app_contact_edit', {'id': contact.id}) }}">Modifier</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('app_contact_delete', {'id': contact.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">Pas de données enregistrées</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_contact_new') }}">Créer un nouveau message</a>
+{% endblock %}

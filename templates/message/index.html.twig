@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                {# <th>Id</th> #}
                 <th>Objet</th>
                 <th>Expéditeur</th>
                 <th>Contenu</th>
@@ -19,14 +19,14 @@
         <tbody>
         {% for message in messages %}
             <tr>
-                <td>{{ message.id }}</td>
+                {# <td>{{ message.id }}</td> #}
                 <td>{{ message.object }}</td>
                 <td>{{ message.expeditor }}</td>
                 <td>{{ message.content }}</td>
                 <td>{{ message.createdAt ? message.createdAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_message_show', {'id': message.id}) }}"><button>Voir</button></a>
-                    <a href="{{ path('app_message_edit', {'id': message.id}) }}"><button>Modifier</button></a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_message_show', {'id': message.id}) }}">Voir</a>
+                    <a class="btn btn-warning btn-sm"href="{{ path('app_message_edit', {'id': message.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_message_new') }}"><button>Créer un nouveau messages</button></a>
+    {# <a class="btn btn-success" href="{{ path('app_message_new') }}">Créer un nouveau message</a> #}
 {% endblock %}

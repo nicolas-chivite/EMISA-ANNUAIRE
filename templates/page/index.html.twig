@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des pages{% endblock %}
+
+{% block body %}
+    <h1>Liste des pages</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Contenu</th>
+                <th>En ligne</th>
+                <th>Meta-Titre</th>
+                <th>Meta-Description</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for page in pages %}
+            <tr>
+                <td>{{ page.id }}</td>
+                <td>{{ page.title }}</td>
+                <td>{{ page.content }}</td>
+                <td>{{ page.isActive ? 'Yes' : 'No' }}</td>
+                <td>{{ page.metaTitle }}</td>
+                <td>{{ page.metaDescription }}</td>
+                <td>{{ page.createdAt ? page.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ page.updatedAt ? page.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_page_show', {'id': page.id}) }}">Voir</a>
+                    <a class="btn btn-warning btn-sm" href="{{ path('app_page_edit', {'id': page.id}) }}">Modifier</a>
+                    <a class="btn btn-danger btn-sm" href="{{ path('app_page_delete', {'id': page.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Pas de résultat trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-success" href="{{ path('app_page_new') }}">Créer une nouvelle page</a>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Student;
 use App\Entity\Course;
+use App\Entity\Log;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

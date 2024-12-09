@@ -7,18 +7,33 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ['course:read']],
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'partial'])]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['course:read', 'student:read'])]
     #[ORM\Column]
     private ?int $id = null;
-
+    
+    #[Groups(['course:read', 'student:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[Groups(['student:read'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 

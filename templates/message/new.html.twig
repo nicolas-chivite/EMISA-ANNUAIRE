@@ -3,9 +3,9 @@
 {% block title %}Nouveau message{% endblock %}
 
 {% block body %}
-    <h1>Ecrire un nouveau message</h1>
+    <h1>Ecrire un nouveau message à {{ student.fullName }}</h1>
 
     {{ include('message/_form.html.twig') }}
 
-    <a href="{{ path('app_message_index') }}"><button>Retour aux messages</button></a>
+    <a class="btn btn-primary my-1" href="{{ path('app_message_index') }}">Retour aux messages</a>
 {% endblock %}
